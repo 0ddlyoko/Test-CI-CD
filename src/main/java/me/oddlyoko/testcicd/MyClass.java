@@ -5,22 +5,4 @@ public class MyClass {
     public int getA() {
         return 42;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
