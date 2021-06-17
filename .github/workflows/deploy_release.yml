@@ -41,7 +41,7 @@ jobs:
           git config user.email "actions@github.com"
 
       - name: Create a Release
-        run: mvn release:prepare release:perform -B -s .maven_settings.xml -DreleaseVersion=${{ env.BASE_BRANCH }} -DdevelopmentVersion=${{ env.BASE_BRANCH }}-SNAPSHOT -X
+        run: mvn release:prepare release:perform -B -DreleaseVersion=${{ env.BASE_BRANCH }} -DdevelopmentVersion=${{ env.BASE_BRANCH }}-SNAPSHOT -X
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }}
@@ -75,7 +75,7 @@ jobs:
           git config user.email "actions@github.com"
 
       - name: Deploy with Maven
-        run: mvn -B deploy --file pom.xml -s .maven_settings.xml -DretryFailedDeploymentCount=10
+        run: mvn -B deploy --file pom.xml -s -DretryFailedDeploymentCount=10
         env:
           CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
           CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
