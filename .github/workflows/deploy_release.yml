@@ -6,10 +6,6 @@ on:
         description: "Version of the release"
         required: true
         default: "1.0.0"
-      developmentVersion:
-        description: "Version of the release"
-        required: true
-        default: "1.0.0-SNAPSHOT"
 
 jobs:
   release:
@@ -41,7 +37,7 @@ jobs:
           git config user.email "actions@github.com"
 
       - name: Create a Release
-        run: mvn release:prepare release:perform -B -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }}-SNAPSHOT -X
+        run: mvn release:prepare release:perform -B -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdevelopmentVersion=${{ github.event.inputs.releaseVersion }}-SNAPSHOT -X
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }}
