@@ -27,14 +27,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Cache Maven Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/cache
-            !~/cache/exclude
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-
       - name: Configure Git User
         run: |
           git config user.name "GitHub Actions"

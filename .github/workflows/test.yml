@@ -15,13 +15,5 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Cache Maven Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/cache
-            !~/cache/exclude
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-
       - name: Build and Test with Maven
         run: mvn --batch-mode --update-snapshots test
