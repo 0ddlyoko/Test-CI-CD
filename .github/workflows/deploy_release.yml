@@ -8,7 +8,7 @@ on:
         default: "1.0.0"
 
 jobs:
-  release:
+  create_release:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,6 +27,8 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+      - name: Create Release
+        id: create_release
 
       - name: Create a Release
         run: mvn release:prepare release:perform -B -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdevelopmentVersion=${{ github.event.inputs.releaseVersion }}-SNAPSHOT -X
@@ -34,7 +36,7 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }}
   deploy:
-    needs: release
+    needs: create_release
     # Disable it for now
     if: false == true
     runs-on: ubuntu-latest
