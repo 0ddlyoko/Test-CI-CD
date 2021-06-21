@@ -26,19 +26,11 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Configure Git User
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-      - name: New branch
-        run: |
-          git checkout -B ${{ github.event.inputs.releaseVersion }}
-          git push origin ${{ github.event.inputs.releaseVersion }}
       - name: Create Pull Request
         id: cpr
         uses: repo-sync/pull-request@v2
         with:
-          source_branch: "${{ github.event.inputs.releaseVersion }}"
+          source_branch: develop
           destination_branch: master
           pr_title: "[RELEASE] ${{ github.event.inputs.releaseVersion }}"
           pr_label: release
@@ -46,6 +38,7 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }}
+
       - name: Check output
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pr_number }}"
