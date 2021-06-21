@@ -89,10 +89,11 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
         with:
-          ref: develop
+          ref: master
 
       - name: Update develop
         run: |
+          git checkout develop;
           git merge master;
           git push;
   make_pr_develop:
@@ -109,7 +110,7 @@ jobs:
         with:
           source_branch: develop
           destination_branch: master
-          pr_title: "{{ github.event.inputs.releaseVersion }}: Master => Develop"
+          pr_title: "${{ github.event.inputs.releaseVersion }}: Master => Develop"
           pr_body: "Error while merging master to develop. Manual action should be done."
           pr_assignee: 0ddlyoko
         env:
