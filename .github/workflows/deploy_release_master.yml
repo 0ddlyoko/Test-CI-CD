@@ -46,8 +46,6 @@ jobs:
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    outputs:
-      release_id: ${{ steps.create_release.outputs.id }}
 
   update_version_build:
     needs: create_draft_release
@@ -84,4 +82,6 @@ jobs:
           hub release edit -a Test-CI-CD.jar -m "" "${{ github.event.inputs.releaseVersion }}";
           git push;
           hub release edit --draft=false -m "" "${{ github.event.inputs.releaseVersion }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
