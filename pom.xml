@@ -4,6 +4,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>Test-CI-CD</artifactId>
+    <!-- Do not edit, the version is automatically edited by maven ! -->
     <version>1.0.2-SNAPSHOT</version>
 
     <name>Test CI CD</name>

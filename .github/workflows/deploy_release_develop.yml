@@ -79,9 +79,9 @@ jobs:
 
       - name: Publish jar
         run: |
-          hub release edit -a Test-CI-CD.jar -m "" "${{ github.event.inputs.releaseVersion }}";
+          hub release edit -a Test-CI-CD.jar -m "" "${{ github.event.inputs.releaseVersion }}-SNAPSHOT";
           git push;
-          hub release edit --draft=false -m "" "${{ github.event.inputs.releaseVersion }}";
+          hub release edit --draft=false -m "" "${{ github.event.inputs.releaseVersion }}-SNAPSHOT";
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

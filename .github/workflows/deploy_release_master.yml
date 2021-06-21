@@ -10,7 +10,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
@@ -24,12 +23,11 @@ jobs:
           distribution: 'adopt'
 
       - name: Build and Test with Maven
-        run: mvn --batch-mode --update-snapshots test
+        run: mvn --batch-mode --update-snapshots test;
 
   create_draft_release:
     needs: test
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
@@ -50,7 +48,6 @@ jobs:
   update_version_build:
     needs: create_draft_release
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
@@ -81,7 +78,40 @@ jobs:
         run: |
           hub release edit -a Test-CI-CD.jar -m "" "${{ github.event.inputs.releaseVersion }}";
           git push;
-          hub release edit --draft=false -m "" "${{ github.event.inputs.releaseVersion }}"
+          hub release edit --draft=false -m "" "${{ github.event.inputs.releaseVersion }}";
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  update_develop:
+    needs: update_version_build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+        with:
+          ref: develop
+
+      - name: Update develop
+        run: |
+          git merge master;
+          git push;
+  make_pr_develop:
+    needs: update_develop
+    runs-on: ubuntu-latest
+    if: always() && (needs.update_develop.result == 'failure')
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Make a PR
+        uses: repo-sync/pull-request@v2.6
+        with:
+          source_branch: develop
+          destination_branch: master
+          pr_title: "{{ github.event.inputs.releaseVersion }}: Master => Develop"
+          pr_body: "Error while merging master to develop. Manual action should be done."
+          pr_assignee: 0ddlyoko
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ github.token }}
