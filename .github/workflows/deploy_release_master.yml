@@ -77,11 +77,11 @@ jobs:
       - name: Build Jar file
         run: |
           mvn -B package;
-          mv target/Test-CI-CD-${{ github.event.inputs.releaseVersion }}.jar ./Test-CI-CD.jar;
+          mv target/Test-CI-CD-${{ github.event.inputs.releaseVersion }}.jar Test-CI-CD.jar;
 
       - name: Publish jar
         run: |
-          hub release edit -a Test-CI-CD.jar -m "" "${{ needs.create_draft_release.outputs.release_id }}";
+          hub release edit -a Test-CI-CD.jar -m "" "${{ github.event.inputs.releaseVersion }}";
           git push;
-          hub release edit --draft=false -m "" "${{ needs.create_draft_release.outputs.release_id }}"
+          hub release edit --draft=false -m "" "${{ github.event.inputs.releaseVersion }}"
 
