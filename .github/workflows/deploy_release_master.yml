@@ -95,6 +95,7 @@ jobs:
         run: |
           git fetch origin develop;
           git checkout develop;
+          git rebase master;
           git merge master;
           git push;
   make_pr_develop:
