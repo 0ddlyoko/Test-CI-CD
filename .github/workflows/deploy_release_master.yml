@@ -93,6 +93,7 @@ jobs:
 
       - name: Update develop
         run: |
+          git fetch origin develop;
           git checkout develop;
           git merge master;
           git push;
