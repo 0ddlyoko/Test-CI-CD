@@ -92,12 +92,10 @@ jobs:
           ref: master
 
       - name: Update develop
-        uses: devmasx/merge-branch@v1.3.1
-        with:
-          type: now
-          from_branch: master
-          target_branch: develop
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote update;
+          git rebase --autostash master develop;
+          git push origin develop;
 
   make_pr_develop:
     needs: update_develop
