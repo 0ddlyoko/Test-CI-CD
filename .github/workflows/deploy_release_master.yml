@@ -95,10 +95,12 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git remote -v
-          git remote update
+          git fetch origin master
+          git checkout master
+          git pull origin master
+          git fetch origin develop
+          git checkout develop
+          git pull origin develop
           git rebase --autostash master develop
           git push origin develop
 
