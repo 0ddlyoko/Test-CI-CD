@@ -91,36 +91,13 @@ jobs:
         with:
           ref: master
 
-      - name: Update develop
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git fetch origin master
-          git checkout master
-          git pull origin master
-          git fetch origin develop
-          git checkout develop
-          git pull origin develop
-          git rebase --autostash master develop
-          git push origin develop
-
-  make_pr_develop:
-    needs: update_develop
-    runs-on: ubuntu-latest
-    if: always() && (needs.update_develop.result == 'failure')
-    steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v2
-        with:
-          ref: master
-
-      - name: Make a PR
+      - name: Update Develop
         uses: repo-sync/pull-request@v2.6
         with:
           source_branch: master
           destination_branch: develop
           pr_title: "${{ github.event.inputs.releaseVersion }}: Master => Develop"
-          pr_body: "Error while merging master to develop. Manual action should be done."
+          pr_body: "Manual action should be done to merge Master => Develop"
           pr_assignee: 0ddlyoko
         env:
           GITHUB_ACTOR: ${{ github.actor }}
