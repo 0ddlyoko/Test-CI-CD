@@ -10,7 +10,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
@@ -29,7 +28,6 @@ jobs:
   create_draft_release:
     needs: test
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
@@ -50,7 +48,6 @@ jobs:
   update_version_build:
     needs: create_draft_release
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2

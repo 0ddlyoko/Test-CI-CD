@@ -92,12 +92,13 @@ jobs:
           ref: master
 
       - name: Update develop
-        run: |
-          git fetch origin develop;
-          git checkout develop;
-          git rebase master;
-          git merge master;
-          git push;
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: master
+          target_branch: develop
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
   make_pr_develop:
     needs: update_develop
     runs-on: ubuntu-latest
@@ -107,6 +108,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
+
       - name: Make a PR
         uses: repo-sync/pull-request@v2.6
         with:
