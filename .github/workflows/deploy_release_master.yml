@@ -89,16 +89,20 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
         with:
-          ref: master
+          ref: develop
 
-      - name: Update Develop
-        uses: repo-sync/pull-request@v2.6
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
         with:
-          source_branch: master
-          destination_branch: develop
-          pr_title: "Release ${{ github.event.inputs.releaseVersion }}: Master => Develop"
-          pr_body: "Manual action should be done to merge Master => Develop"
-          pr_assignee: 0ddlyoko
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ github.token }}
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: New version
+        run: |
+          git config user.name "GitHub Actions";
+          git config user.email "actions@github.com";
+          mvn versions:set -DnewVersion=${{ github.event.inputs.releaseVersion }}-SNAPSHOT -DgenerateBackupPoms=false;
+          mvn versions:set-property -Dproperty=project.version -DnewVersion=${{ github.event.inputs.releaseVersion }}-SNAPSHOT;
+          git add pom.xml;
+          git commit -m "Version ${{ github.event.inputs.releaseVersion }}-SNAPSHOT";
+          git push;
