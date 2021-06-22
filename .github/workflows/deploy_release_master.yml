@@ -93,9 +93,14 @@ jobs:
 
       - name: Update develop
         run: |
-          git remote update;
-          git rebase --autostash master develop;
-          git push origin develop;
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git remote -v
+          git remote update
+          git rebase --autostash master develop
+          git push origin develop
 
   make_pr_develop:
     needs: update_develop
@@ -110,8 +115,8 @@ jobs:
       - name: Make a PR
         uses: repo-sync/pull-request@v2.6
         with:
-          source_branch: develop
-          destination_branch: master
+          source_branch: master
+          destination_branch: develop
           pr_title: "${{ github.event.inputs.releaseVersion }}: Master => Develop"
           pr_body: "Error while merging master to develop. Manual action should be done."
           pr_assignee: 0ddlyoko
