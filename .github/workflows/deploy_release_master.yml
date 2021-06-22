@@ -96,7 +96,7 @@ jobs:
         with:
           source_branch: master
           destination_branch: develop
-          pr_title: "${{ github.event.inputs.releaseVersion }}: Master => Develop"
+          pr_title: "Release ${{ github.event.inputs.releaseVersion }}: Master => Develop"
           pr_body: "Manual action should be done to merge Master => Develop"
           pr_assignee: 0ddlyoko
         env:
